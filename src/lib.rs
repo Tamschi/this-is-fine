@@ -7,7 +7,7 @@
 //! If you need one of them, or to escalate with [`?`](https://doc.rust-lang.org/stable/reference/expressions/operator-expr.html#the-question-mark-operator),
 //! first call [`.not_fine()`](`FineExt::not_fine`) to crumple the [`Fine<T, E>`] into a classic [`Result<T, E>`].
 //!
-//! `transpose` and `flatten` are also excluded, unless I figure out what makes the most sense there.
+//! (More) `transpose` and `flatten` methods are also excluded, unless I figure out what makes the most sense there.
 
 #![doc(html_root_url = "https://docs.rs/this-is-fine/0.0.1")]
 #![warn(clippy::pedantic)]
@@ -42,6 +42,7 @@ pub fn from_inverse<T, E>((value, error): (T, Option<E>)) -> Fine<T, E> {
 pub mod prelude {
 	pub use crate::{
 		FineExt, FineExtWhereEDebug, FineExtWhereTDebug, FineExtWhereTDeref, FineExtWhereTDerefMut,
+		FineTransposeExt,
 	};
 }
 
@@ -249,5 +250,16 @@ where
 {
 	fn as_deref_mut(&mut self) -> Fine<&mut <T as Deref>::Target, &mut E> {
 		self.as_mut().map(DerefMut::deref_mut)
+	}
+}
+
+pub trait FineTransposeExt<T, E0, E1> {
+	/// Exchanges the [`Result`]s of nested [`Fine`]s.
+	fn transpose(self) -> Fine<Fine<T, E1>, E0>;
+}
+impl<T, E0, E1> FineTransposeExt<T, E0, E1> for Fine<Fine<T, E0>, E1> {
+	fn transpose(self) -> Fine<Fine<T, E1>, E0> {
+		let ((t, e0), e1) = self;
+		((t, e1), e0)
 	}
 }
