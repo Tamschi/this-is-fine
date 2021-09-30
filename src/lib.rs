@@ -4,6 +4,8 @@
 //!
 //! Note that any "`and`"-, "`or`" and "`iter`"-style methods that appear on [`Result`] are excluded from the extensions.
 //!
+//! `transpose` and `flatten` are also excluded, unless I figure out what makes the most sense there.
+//!
 //! If you need one of them, or to escalate with [`?`](https://doc.rust-lang.org/stable/reference/expressions/operator-expr.html#the-question-mark-operator),
 //! first call [`.not_fine()`](`FineExt::not_fine`) to crumple the [`Fine<T, E>`] into a classic [`Result<T, E>`].
 
@@ -12,7 +14,10 @@
 #![allow(clippy::semicolon_if_nothing_returned)]
 #![no_std]
 
-use core::fmt::Debug;
+use core::{
+	fmt::Debug,
+	ops::{Deref, DerefMut},
+};
 
 #[cfg(doctest)]
 pub mod readme {
@@ -30,7 +35,9 @@ pub mod readme {
 pub type Fine<T, E> = (T, Result<(), E>);
 
 pub mod prelude {
-	pub use crate::{FineExt, FineExtWhereEDebug, FineExtWhereTDebug};
+	pub use crate::{
+		FineExt, FineExtWhereEDebug, FineExtWhereTDebug, FineExtWhereTDeref, FineExtWhereTDerefMut,
+	};
 }
 
 pub trait FineExt<T, E> {
@@ -205,5 +212,37 @@ where
 	#[track_caller]
 	fn unwrap_err(self) -> E {
 		self.not_fine().unwrap_err()
+	}
+}
+
+pub trait FineExtWhereTDeref<T, E>
+where
+	T: Deref,
+{
+	/// Coerces the `T` via [`Deref`] and returns a new [`Fine`] referencing the original.
+	fn as_deref(&self) -> Fine<&<T as Deref>::Target, &E>;
+}
+impl<T, E> FineExtWhereTDeref<T, E> for Fine<T, E>
+where
+	T: Deref,
+{
+	fn as_deref(&self) -> Fine<&<T as Deref>::Target, &E> {
+		self.as_ref().map(Deref::deref)
+	}
+}
+
+pub trait FineExtWhereTDerefMut<T, E>
+where
+	T: DerefMut,
+{
+	/// Coerces the `T` via [`DerefMut`] and returns a new [`Fine`] referencing the original.
+	fn as_deref_mut(&mut self) -> Fine<&mut <T as Deref>::Target, &mut E>;
+}
+impl<T, E> FineExtWhereTDerefMut<T, E> for Fine<T, E>
+where
+	T: DerefMut,
+{
+	fn as_deref_mut(&mut self) -> Fine<&mut <T as Deref>::Target, &mut E> {
+		self.as_mut().map(DerefMut::deref_mut)
 	}
 }
