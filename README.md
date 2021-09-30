@@ -15,7 +15,13 @@
 
 [![crev reviews](https://web.crev.dev/rust-reviews/badge/crev_count/this-is-fine.svg)](https://web.crev.dev/rust-reviews/crate/this-is-fine/)
 
-TODO_README_DESCRIPTION
+☕🐕
+
+Utilities for working with `type Fine<T, E> = (T, Result<(), E>)`.
+
+It's a useful return type for map and set insertions.
+
+The API is mostly a port of `Result<T, E>`'s.
 
 ## Installation
 
@@ -27,8 +33,37 @@ cargo add this-is-fine
 
 ## Example
 
+This is a slightly incomplete API preview.
+
 ```rust
-// TODO_EXAMPLE
+use this_is_fine::{Fine, prelude::*};
+
+let fine: Fine<_, ()> = ((), Ok(()));
+
+fine.fine(); // Discard any error.
+fine.not_fine(); // Convert to `Result`.
+fine.ok(); // `.not_fine().ok()`
+fine.err(); // `.1.err()`
+fine.is_ok(); // `.1.is_ok()`
+fine.is_err(); // `.1.is_err()`
+fine.as_ref(); // Like `Result::as_ref`.
+fine.map(|t| t); // Like `Result::map`.
+fine.map_err(|e| e); // Like `Result::map_err`.
+fine.expect("message"); // Like `.fine`, but can panic.
+fine.unwrap(); // "
+
+let mut fine = fine;
+fine.as_mut(); // Like `Result::as_mut`.
+
+// `Some` error is still fine.
+let fine = this_is_fine::from_inverse(((), Some(())));
+fine.expect_err("message");
+fine.unwrap_err();
+fine.fine();
+
+// Twice as fine.
+let fine_fine: Fine<Fine<_, ()>, ()> = (((), Ok(())), Ok(()));
+fine_fine.transpose(); // Exchange `Result`s.
 ```
 
 ## License

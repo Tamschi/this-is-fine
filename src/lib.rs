@@ -8,6 +8,8 @@
 //! first call [`.not_fine()`](`FineExt::not_fine`) to crumple the [`Fine<T, E>`] into a classic [`Result<T, E>`].
 //!
 //! (More) `transpose` and `flatten` methods are also excluded, unless I figure out what makes the most sense there.
+//!
+//! ☕🐕
 
 #![doc(html_root_url = "https://docs.rs/this-is-fine/0.0.1")]
 #![warn(clippy::pedantic)]
