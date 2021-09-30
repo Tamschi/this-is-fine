@@ -1,15 +1,15 @@
 [package]
-name = "TODO_CRATE_NAME"
+name = "this-is-fine"
 version = "0.0.1"
 authors = ["Tamme Schichler <tamme@schichler.dev>"]
 edition = "2018"
-description = "TODO_DESCRIPTION"
+description = "`pub type Fine<T, E> = (T, Result<(), E>);` ☕🐕"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Tamschi/TODO_CRATE_NAME"
-homepage = "https://github.com/Tamschi/TODO_CRATE_NAME/tree/v0.0.1"
-documentation = "https://docs.rs/TODO_CRATE_NAME/0.0.1"
-keywords = [] #TODO
-categories = [] #TODO
+repository = "https://github.com/Tamschi/this-is-fine"
+homepage = "https://github.com/Tamschi/this-is-fine/tree/v0.0.1"
+documentation = "https://docs.rs/this-is-fine/0.0.1"
+keywords = ["mostly_infallible", "results", "convenience"]
+categories = ["rust-patterns"]
 readme = "README.md"
 include = [
 	"**/*.rs",
@@ -25,8 +25,8 @@ resolver = "2"
 publish = false
 
 [badges]
-is-it-maintained-issue-resolution = { repository = "Tamschi/TODO_CRATE_NAME" }
-is-it-maintained-open-issues = { repository = "Tamschi/TODO_CRATE_NAME" }
+is-it-maintained-issue-resolution = { repository = "Tamschi/this-is-fine" }
+is-it-maintained-open-issues = { repository = "Tamschi/this-is-fine" }
 maintenance = { status = "experimental" } # This may differ between branches.
 
 [dev-dependencies]
