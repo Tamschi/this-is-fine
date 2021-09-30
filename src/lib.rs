@@ -1,13 +1,13 @@
-//! Utilities for working with <code>type [Fine<T, E>] = (T, [Result<(), E>])</code>.
+//! Utilities for working with <code>type [Fine<T, E>] = (T, [Result<(), E>](`Result`))</code>.
 //!
-//! This crate for the most part just ports [`Result`]'s API onto [`Fine`]. See [`Fine`] for additions beyond that.
+//! This crate for the most part just ports [`Result`]'s API onto [`Fine`]. See [`Fine`] for the full API.
 //!
 //! Note that any "`and`"-, "`or`" and "`iter`"-style methods that appear on [`Result`] are excluded from the extensions.
 //!
-//! `transpose` and `flatten` are also excluded, unless I figure out what makes the most sense there.
-//!
 //! If you need one of them, or to escalate with [`?`](https://doc.rust-lang.org/stable/reference/expressions/operator-expr.html#the-question-mark-operator),
 //! first call [`.not_fine()`](`FineExt::not_fine`) to crumple the [`Fine<T, E>`] into a classic [`Result<T, E>`].
+//!
+//! `transpose` and `flatten` are also excluded, unless I figure out what makes the most sense there.
 
 #![doc(html_root_url = "https://docs.rs/this-is-fine/0.0.1")]
 #![warn(clippy::pedantic)]
