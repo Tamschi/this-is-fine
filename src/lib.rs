@@ -34,6 +34,11 @@ pub mod readme {
 #[must_use]
 pub type Fine<T, E> = (T, Result<(), E>);
 
+/// Creates a [`Fine`] from a pair of a value and optional error.
+pub fn from_inverse<T, E>((value, error): (T, Option<E>)) -> Fine<T, E> {
+	(value, error.map_or(Ok(()), Err))
+}
+
 pub mod prelude {
 	pub use crate::{
 		FineExt, FineExtWhereEDebug, FineExtWhereTDebug, FineExtWhereTDeref, FineExtWhereTDerefMut,
