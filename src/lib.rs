@@ -185,7 +185,7 @@ where
 	#[track_caller]
 	fn expect_err(self, msg: &str) -> E;
 
-	/// Unwraps the `T`.
+	/// Unwraps the `E`.
 	///
 	/// # Panics
 	///
