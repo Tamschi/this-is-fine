@@ -41,7 +41,8 @@ use this_is_fine::{Fine, prelude::*};
 let fine: Fine<_, ()> = ((), Ok(()));
 
 fine.fine(); // Discard any error.
-fine.not_fine(); // Convert to `Result`.
+fine.not_fine(); // Convert to `Result<T, E>`.
+fine.into_result(); // Convert to `Result<T, (T, E)>`.
 fine.ok(); // `.not_fine().ok()`
 fine.err(); // `.1.err()`
 fine.is_ok(); // `.1.is_ok()`

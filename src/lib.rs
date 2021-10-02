@@ -78,6 +78,13 @@ pub trait FineExt<T, E> {
 	/// Iff the [`Result`] was [`Err`], in which case the `T` is discarded.
 	fn not_fine(self) -> Result<T, E>;
 
+	/// Converts from [`Fine<T, E>`] to [`Result<T, (T, E)>`].
+	///
+	/// # Errors
+	///
+	/// Iff the [`Result`] was [`Err`].
+	fn into_result(self) -> Result<T, (T, E)>;
+
 	/// Converts from [`&Fine<T, E>`](`Fine`) to [`Fine<&T, &E>`].
 	///
 	/// Produces a new [`Fine`], containing one or two references into the original, leaving the original in place.
@@ -126,6 +133,13 @@ impl<T, E> FineExt<T, E> for Fine<T, E> {
 	fn not_fine(self) -> Result<T, E> {
 		self.1?;
 		Ok(self.0)
+	}
+
+	fn into_result(self) -> Result<T, (T, E)> {
+		match self.1 {
+			Ok(()) => Ok(self.0),
+			Err(e) => Err((self.0, e)),
+		}
 	}
 
 	fn as_ref(&self) -> Fine<&T, &E> {
